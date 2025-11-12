@@ -1,0 +1,22 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.listWrapper {
+	border: 1px solid rgba(255,255,255,0.06);
+	border-radius: 8px;
+	padding: 8px;
+	list-style: none;
+	max-width: 720px;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+}
