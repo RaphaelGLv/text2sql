@@ -1,7 +1,7 @@
 "use client";
 
 import { TextInput } from "@/app/components/inputs/text-input/text-input";
-import { useDbChatHooks } from "./useDbChat.hooks";
+import { useDbChatHooks } from "./use-db-chat.hooks";
 import { AppButton } from "@/app/components/buttons/app-button";
 
 export function ChatClient() {
