@@ -1,11 +1,11 @@
 import styles from "./db-schemas-list-item.module.css";
 import { AppButton } from "@/app/components/buttons/app-button";
-import { SchemaScript } from "@/app/stores/schema-script/schema-script.types";
+import { SchemaScriptModel } from "@/app/stores/schema-script/schema-script.types";
 
 interface DbSchemasListItemProps {
-    schema: SchemaScript
-    onClickChat: (schema: SchemaScript) => void;
-    onClickDelete: (schema: SchemaScript) => void;
+    schema: SchemaScriptModel
+    onClickChat: (schema: SchemaScriptModel) => void;
+    onClickDelete: (schema: SchemaScriptModel) => void;
 }
 
 export function DbSchemasListItem({

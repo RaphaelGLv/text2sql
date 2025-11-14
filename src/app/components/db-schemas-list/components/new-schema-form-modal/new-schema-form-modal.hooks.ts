@@ -1,11 +1,12 @@
 import { useSchemaScriptService } from "@/app/services/schema-script.service";
-import { SchemaScript } from "@/app/stores/schema-script/schema-script.types";
+import { SchemaScriptEntity } from "@/app/entities/schema-script.entity";
 import { useToastStore } from "@/app/stores/toast/toast.store";
 import { useState } from "react";
+import { extractSchemaFromSqlScript } from "@/app/utils/extract-schema-from-sql-script";
 
 export interface UseNewSchemaFormModalHooks {
-  value: SchemaScript;
-  setValue: (value: SchemaScript) => void;
+  value: SchemaScriptEntity;
+  setValue: (value: SchemaScriptEntity) => void;
   handleFileInputChange: (file: File | null) => void;
   onSave: () => void;
   clearForm: () => void;
@@ -13,7 +14,7 @@ export interface UseNewSchemaFormModalHooks {
 
 export function useNewSchemaFormModalHooks(): UseNewSchemaFormModalHooks {
   const { setToast } = useToastStore();
-  const [value, setValue] = useState<SchemaScript>({ name: "", script: "" });
+  const [value, setValue] = useState<SchemaScriptEntity>({ name: "", script: "" });
   const { addSchemaScript } = useSchemaScriptService();
 
   function handleFileInputChange(file: File | null) {
@@ -30,7 +31,17 @@ export function useNewSchemaFormModalHooks(): UseNewSchemaFormModalHooks {
     reader.onload = (event) => {
       const text = event.target?.result;
       if (typeof text === "string") {
-        setValue({ ...value, script: text });
+        const cleanedScript = extractSchemaFromSqlScript(text);
+
+        if (!cleanedScript) {
+          setToast({
+            message: "Nenhum comando CREATE TABLE ou ALTER TABLE encontrado no arquivo.",
+            type: "error",
+          });
+          return;
+        }
+
+        setValue({ ...value, script: cleanedScript });
       }
     };
 
@@ -38,10 +49,7 @@ export function useNewSchemaFormModalHooks(): UseNewSchemaFormModalHooks {
   }
 
   function onSave() {
-    addSchemaScript({
-      name: value.name,
-      script: value.script,
-    });
+    addSchemaScript({ id: value.id, name: value.name, script: value.script });
   }
 
   function clearForm() {

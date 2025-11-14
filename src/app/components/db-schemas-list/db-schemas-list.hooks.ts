@@ -1,5 +1,7 @@
-import { SchemaScript } from "@/app/stores/schema-script/schema-script.types";
+import { SchemaScriptModel } from "@/app/stores/schema-script/schema-script.types";
+import { SchemaScriptEntity } from "@/app/entities/schema-script.entity";
 import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useNewSchemaFormModalHooks } from "./components/new-schema-form-modal/new-schema-form-modal.hooks";
 import { useModal } from "../modal/modal.hooks";
 import { useSchemaScriptService } from "@/app/services/schema-script.service";
@@ -9,11 +11,11 @@ interface UseDbSchemasListHooks {
   isFormModalOpen: boolean;
   openFormModal: () => void;
   closeFormModal: () => void;
-  schemaScripts: SchemaScript[];
-  goToChat: (schema: SchemaScript) => void;
-  deleteSchema: (schema: SchemaScript) => void;
-  newSchemaValue: SchemaScript;
-  setNewSchemaValue: (value: SchemaScript) => void;
+  schemaScripts: SchemaScriptModel[];
+  goToChat: (schema: SchemaScriptModel) => void;
+  deleteSchema: (schema: SchemaScriptModel) => void;
+  newSchemaValue: SchemaScriptEntity;
+  setNewSchemaValue: (value: SchemaScriptEntity) => void;
   handleNewSchemaFileInputChange: (file: File | null) => void;
   saveNewSchema: () => void;
   clearNewSchemaForm: () => void;
@@ -25,18 +27,23 @@ export function useDbSchemasList(): UseDbSchemasListHooks {
   const { value, setValue, handleFileInputChange, onSave, clearForm } =
     useNewSchemaFormModalHooks();
   const { isModalOpen, openModal, closeModal } = useModal();
+  const router = useRouter();
 
   function openFormModal() {
     clearForm();
     openModal();
   }
 
-  const handleChat = useCallback((schema: SchemaScript) => {
-    console.log("go to chat", schema.name);
-  }, []);
+  const handleChat = useCallback(
+    (schema: SchemaScriptModel) => {
+      // navigate to chat page for this schema id
+      router.push(`/chat/${encodeURIComponent(schema.id)}`);
+    },
+    [router]
+  );
 
-  const handleDelete = (schema: SchemaScript) => {
-    removeSchemaScript(schema.name);
+  const handleDelete = (schema: SchemaScriptModel) => {
+    removeSchemaScript(schema.id);
   };
 
   return {
