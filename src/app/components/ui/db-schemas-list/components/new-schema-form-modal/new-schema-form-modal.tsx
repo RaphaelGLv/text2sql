@@ -1,12 +1,12 @@
 "use client";
 
 import styles from "./new-schema-form-modal.module.css";
-import { TextInput } from "@/app/components/inputs/text-input/text-input";
-import Modal from "@/app/components/modal/modal";
-import { AppButton } from "@/app/components/buttons/app-button";
-import { FileInput } from "@/app/components/inputs/file-input/file-input";
+import Modal from "@/app/components/layout/modal/modal";
+import { AppButton } from "@/app/components/ui/buttons/app-button";
 import { UseNewSchemaFormModalHooks } from "./new-schema-form-modal.hooks";
-import { UseModalHooks } from "@/app/components/modal/modal.hooks";
+import { UseModalHooks } from "@/app/components/layout/modal/modal.hooks";
+import { TextInput } from "../../../inputs/text-input/text-input";
+import { FileInput } from "../../../inputs/file-input/file-input";
 
 interface NewSchemaFormModalProps extends Omit<UseModalHooks, "openModal">, UseNewSchemaFormModalHooks {}
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { TextInput } from "@/app/components/inputs/text-input/text-input";
+import { TextInput } from "@/app/components/ui/inputs/text-input/text-input";
 import { useDbChatHooks } from "./use-db-chat.hooks";
-import { AppButton } from "@/app/components/buttons/app-button";
+import { AppButton } from "@/app/components/ui/buttons/app-button";
 
 export function ChatClient() {
   const { schema, chatInput, setChatInput, handleSendPrompt } = useDbChatHooks();

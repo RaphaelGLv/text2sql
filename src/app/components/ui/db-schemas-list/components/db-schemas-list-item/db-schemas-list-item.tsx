@@ -1,5 +1,5 @@
 import styles from "./db-schemas-list-item.module.css";
-import { AppButton } from "@/app/components/buttons/app-button";
+import { AppButton } from "@/app/components/ui/buttons/app-button";
 import { SchemaScriptModel } from "@/app/stores/schema-script/schema-script.types";
 
 interface DbSchemasListItemProps {

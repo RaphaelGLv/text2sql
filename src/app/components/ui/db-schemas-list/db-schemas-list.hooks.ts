@@ -3,7 +3,7 @@ import { SchemaScriptEntity } from "@/app/entities/schema-script.entity";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useNewSchemaFormModalHooks } from "./components/new-schema-form-modal/new-schema-form-modal.hooks";
-import { useModal } from "../modal/modal.hooks";
+import { useModal } from "../../layout/modal/modal.hooks";
 import { useSchemaScriptService } from "@/app/services/schema-script.service";
 import { useSchemaScriptStore } from "@/app/stores/schema-script/schema-script.store";
 
