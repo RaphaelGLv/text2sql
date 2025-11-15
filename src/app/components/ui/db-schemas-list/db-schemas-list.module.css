@@ -3,6 +3,10 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 12px;
+
+	& > h3 {
+		font-size: x-large;
+	}
 }
 
 .listWrapper {

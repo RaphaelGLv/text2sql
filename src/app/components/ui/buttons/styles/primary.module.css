@@ -1,0 +1,23 @@
+.button {
+    --_background-color: var(--brand300);
+
+    background-color: var(--_background-color);
+    
+    transition: background-color 0.3s ease-in-out;
+    &:hover,
+    &:focus {
+        background-color: oklch(from var(--_background-color) 0.45 0.2 h);
+    }
+}
+
+.variant_success {
+    --_background-color: var(--success400);
+}
+
+.variant_warning {
+    --_background-color: var(--warning400);
+}
+
+.variant_danger {
+    --_background-color: var(--error400);
+}

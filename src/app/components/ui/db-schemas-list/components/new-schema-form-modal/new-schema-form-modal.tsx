@@ -7,8 +7,11 @@ import { UseNewSchemaFormModalHooks } from "./new-schema-form-modal.hooks";
 import { UseModalHooks } from "@/app/components/layout/modal/modal.hooks";
 import { TextInput } from "../../../inputs/text-input/text-input";
 import { FileInput } from "../../../inputs/file-input/file-input";
+import { AppButtonVariants } from "../../../buttons/app-button.types";
 
-interface NewSchemaFormModalProps extends Omit<UseModalHooks, "openModal">, UseNewSchemaFormModalHooks {}
+interface NewSchemaFormModalProps
+  extends Omit<UseModalHooks, "openModal">,
+    UseNewSchemaFormModalHooks {}
 
 export function NewSchemaFormModal({
   isModalOpen,
@@ -27,7 +30,11 @@ export function NewSchemaFormModal({
   }
 
   return (
-    <Modal title="Adicionar Banco de Dados" isOpen={isModalOpen} onClose={closeModal}>
+    <Modal
+      title="Adicionar Banco de Dados"
+      isOpen={isModalOpen}
+      onClose={closeModal}
+    >
       <form onSubmit={handleSubmit}>
         <TextInput
           id="schema-name-input"
@@ -46,8 +53,15 @@ export function NewSchemaFormModal({
         />
 
         <footer className={styles.footer}>
-          <AppButton onClick={closeModal}>Cancelar</AppButton>
-          <AppButton buttonProps={{ type: "submit" }}>Salvar</AppButton>
+          <AppButton onClick={closeModal} variant={AppButtonVariants.DANGER}>
+            Cancelar
+          </AppButton>
+          <AppButton
+            buttonProps={{ type: "submit" }}
+            variant={AppButtonVariants.SUCCESS}
+          >
+            Salvar
+          </AppButton>
         </footer>
       </form>
     </Modal>
