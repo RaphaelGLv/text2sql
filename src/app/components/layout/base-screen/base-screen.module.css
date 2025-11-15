@@ -1,0 +1,4 @@
+.content {
+  margin-top: 1rem;
+  padding-inline: clamp(1rem, 20vw, 24rem);
+}

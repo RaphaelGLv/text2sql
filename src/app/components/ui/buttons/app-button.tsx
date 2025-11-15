@@ -1,5 +1,6 @@
 import styles from "./app-button.module.css";
 import primaryStyles from "./styles/primary.module.css";
+import transparentStyles from "./styles/transparent.module.css";
 import { AppButtonProps, AppButtonTypes } from "./app-button.types";
 
 export function AppButton({
@@ -13,6 +14,7 @@ export function AppButton({
 }: AppButtonProps) {
   const buttonTypesMap: Record<AppButtonTypes, typeof primaryStyles> = {
     [AppButtonTypes.PRIMARY]: primaryStyles,
+    [AppButtonTypes.TRANSPARENT]: transparentStyles,
   };
 
   const CurrentButtonStyles = buttonTypesMap[type];

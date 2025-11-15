@@ -1,5 +1,6 @@
 export enum AppButtonTypes {
     PRIMARY = "PRIMARY",
+    TRANSPARENT = "TRANSPARENT",
 }
 
 export enum AppButtonVariants{
