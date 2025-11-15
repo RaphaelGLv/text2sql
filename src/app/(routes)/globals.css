@@ -12,8 +12,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  padding-inline: clamp(1rem, 20vw, 24rem);
 }
 
 * {
