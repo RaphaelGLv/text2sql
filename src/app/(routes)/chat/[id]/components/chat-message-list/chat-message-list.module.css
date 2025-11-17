@@ -1,0 +1,44 @@
+.list {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+  list-style: none;
+}
+
+.item {
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.01);
+
+  & strong {
+    color: var(--brand300);
+  }
+}
+
+.question {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.answer {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.sqlQuery {
+  position: relative;
+  font-family: sans-serif;
+  background-color: var(--background);
+  padding: 1.25rem;
+  padding-right: 2.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.copyButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
