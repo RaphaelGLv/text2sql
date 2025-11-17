@@ -1,11 +1,11 @@
 import { useCallback } from "react";
 import { useSchemaScriptStore } from "../stores/schema-script/schema-script.store";
 import { useToastStore } from "../stores/toast/toast.store";
-import { SchemaScript } from "../stores/schema-script/schema-script.types";
+import { SchemaScriptEntity } from "../entities/schema-script.entity";
 
 interface SchemaScriptService {
-  addSchemaScript: (schema: SchemaScript) => void;
-  removeSchemaScript: (name: string) => void;
+  addSchemaScript: (payload: SchemaScriptEntity) => void;
+  removeSchemaScript: (id: string) => void;
 }
 
 export function useSchemaScriptService(): SchemaScriptService {
@@ -17,9 +17,9 @@ export function useSchemaScriptService(): SchemaScriptService {
     (state) => state.removeSchemaScript
   );
 
-  const addSchemaScript = useCallback(({ name, script }: SchemaScript) => {
+  const addSchemaScript = useCallback(({ id, name, script }: SchemaScriptEntity) => {
     try {
-      addSchemaScriptToStore({ name, script });
+      addSchemaScriptToStore({ id, name, script });
       setToast({
         message: `Schema "${name}" criado com sucesso.`,
         type: "success",
@@ -34,11 +34,11 @@ export function useSchemaScriptService(): SchemaScriptService {
     }
   }, [addSchemaScriptToStore, setToast]);
 
-  const removeSchemaScript = useCallback((name: string) => {
+  const removeSchemaScript = useCallback((id: string) => {
     try {
-      removeSchemaScriptToStore(name);
+      removeSchemaScriptToStore(id);
       setToast({
-        message: `Schema "${name}" removido com sucesso.`,
+        message: `Schema removido com sucesso.`,
         type: "success",
       });
     } catch (error) {

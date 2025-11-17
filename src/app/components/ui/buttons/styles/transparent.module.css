@@ -1,0 +1,12 @@
+.button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+
+    transition: scale 0.2s ease-in-out;
+    &:hover,
+    &:focus {
+        scale: 1.05;
+    }
+}

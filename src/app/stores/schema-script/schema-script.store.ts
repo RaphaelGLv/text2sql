@@ -2,30 +2,37 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { SchemaScriptStore } from "./schema-script.types";
 import { idbStorage } from "@/app/lib/idb-storage";
+import {
+  SchemaScriptEntity,
+  SchemaScriptFactory,
+} from "@/app/entities/schema-script.entity";
 
 export const useSchemaScriptStore = create<SchemaScriptStore>()(
   persist(
     (set) => ({
       schemaScripts: [],
-      addSchemaScript: ({ name: schemaName, script: schemaScript }) =>
+
+      addSchemaScript: (payload: SchemaScriptEntity) =>
         set((state) => {
+          const { id: maybeId, name: schemaName, script: schemaScript } = payload;
+
           const existingIndex = state.schemaScripts.findIndex(
-            (script) => script.name === schemaName
+            (s) => s.name === schemaName
           );
 
           if (existingIndex !== -1) {
             throw new Error("Você já possui um esquema com esse nome.");
           }
 
-          state.schemaScripts.push({ name: schemaName, script: schemaScript });
+          const model = SchemaScriptFactory.toModel({ id: maybeId, name: schemaName, script: schemaScript });
+
+          state.schemaScripts.push(model);
 
           return { schemaScripts: state.schemaScripts };
         }),
-      removeSchemaScript: (schemaName) =>
+      removeSchemaScript: (id: string) =>
         set((state) => {
-          state.schemaScripts = state.schemaScripts.filter(
-            (script) => script.name !== schemaName
-          );
+          state.schemaScripts = state.schemaScripts.filter((s) => s.id !== id);
           return { schemaScripts: state.schemaScripts };
         }),
     }),
