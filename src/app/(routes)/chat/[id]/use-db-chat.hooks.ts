@@ -100,9 +100,11 @@ export function useDbChatHooks(): UseDbChatHooks {
     const messageModel = DbChatMessageFactory.toModel(message);
     const updated = saveMessageOnStorage(messageModel);
 
-    const updatedEntities = updated.map((m) =>
-      DbChatMessageFactory.toEntity(m)
-    );
+    const updatedEntities = updated
+      .map((model) => DbChatMessageFactory.toEntity(model))
+      .filter((entity) => {
+        return entity.chatId === chatId;
+      });
     setMessages(updatedEntities);
   }
 
