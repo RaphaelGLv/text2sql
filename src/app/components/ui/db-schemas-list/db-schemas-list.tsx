@@ -42,6 +42,12 @@ export function DbSchemasList() {
         ))}
       </ul>
 
+      {schemaScripts.length == 0 && (
+        <p className={styles.noSchemasWarning}>
+          Nenhum schema salvo
+        </p>
+      )}
+
       <NewSchemaFormModal
         isModalOpen={isFormModalOpen}
         closeModal={closeFormModal}
