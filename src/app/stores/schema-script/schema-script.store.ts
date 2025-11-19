@@ -40,9 +40,7 @@ export const useSchemaScriptStore = create<SchemaScriptStore>()(
           return { schemaScripts: state.schemaScripts };
         }),
       removeSchemaScript: (id: string) => {
-        console.log(useDbChatMessagesStore.getState().messages)
         useDbChatMessagesStore.getState().removeByChatId(id);
-        console.log(useDbChatMessagesStore.getState().messages)
 
         set((state) => {
           state.schemaScripts = state.schemaScripts.filter((s) => s.id !== id);
