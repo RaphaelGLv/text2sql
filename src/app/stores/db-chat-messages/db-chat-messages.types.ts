@@ -17,6 +17,8 @@ interface DbChatMessagesActions {
      */
     saveMessage: (message: DbChatMessageModel) => DbChatMessageModel[];
     getAllByChatId: (chatId: string) => DbChatMessageModel[];
+    /** Remove all messages that belong to a chat and return the remaining messages */
+    removeByChatId: (chatId: string) => DbChatMessageModel[];
 }
 
 export type DbChatMessagesStore = DbChatMessagesState & DbChatMessagesActions;

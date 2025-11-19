@@ -24,6 +24,12 @@ export const useDbChatMessagesStore = create<DbChatMessagesStore>()(
             const messages = get().messages;
             return messages.filter((msg) => msg.chatId === chatId);
         }
+        ,
+        removeByChatId: (chatId) => {
+          const remaining = get().messages.filter((m) => m.chatId !== chatId);
+          set(() => ({ messages: remaining }));
+          return remaining;
+        }
     }),
     {
       name: "db-chat-messages-storage",
