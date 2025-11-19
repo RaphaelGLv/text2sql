@@ -87,6 +87,8 @@ export function useDbChatHooks(): UseDbChatHooks {
         message: response.message,
         type: "success",
       });
+
+      setChatInput("");
     } catch (error) {
       const typedError = error as Error;
       setToast({
