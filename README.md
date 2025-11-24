@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Text2SQL - Interface de Banco de Dados via Linguagem Natural
 
-## Getting Started
+**Disciplina:** Banco de Dados 2  
+**Alunos:** Raphael Gonçalves Leiva e Rennan Furlaneto Collado  
+**Data:** 24/11/2025  
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 1. Introdução e Objetivo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O projeto Text2Sql consiste no desenvolvimento de uma aplicação web capaz de democratizar o acesso a bancos de dados relacionais. A aplicação atua como uma interface inteligente que traduz perguntas feitas em linguagem natural (Português/Inglês) para consultas SQL sintaticamente corretas e executáveis.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+O objetivo principal é eliminar a barreira técnica da linguagem SQL para usuários finais (gestores, analistas), permitindo que eles interajam com seus próprios dados (arquivos .sqlite ou scripts .sql) através de uma interface de chat intuitiva. O sistema demonstra a integração avançada entre Frontend, Backend, SGBDs Relacionais e Modelos de Linguagem (LLMs).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 2. Definição do Domínio e Problema
 
-To learn more about Next.js, take a look at the following resources:
+O domínio da aplicação é a Administração de Dados e Business Intelligence (BI).  
+Em sistemas tradicionais, a extração de informações gerenciais exige conhecimento técnico em SQL para realizar JOINs, agrupações e filtros. O Text2Sql resolve o problema da acessibilidade aos dados, automatizando a construção da query baseada na estrutura (schema) do banco de dados fornecido pelo usuário.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 3. Arquitetura da Solução
 
-## Deploy on Vercel
+A aplicação foi desenvolvida utilizando uma arquitetura moderna e desacoplada.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3.1. Frontend (Next.js & React)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Responsável pela interação com o usuário, gerenciamento de estado local e processamento inicial de arquivos.
+
+**Gerenciamento de Schemas:**  
+Utiliza o localStorage e IndexedDB para persistir os schemas dos bancos de dados do usuário no navegador, evitando re-uploads constantes.
+
+**Processamento Local:**  
+Implementa lógica para ler arquivos .sql (via FileReader), extraindo apenas a estrutura DDL (CREATE TABLE) necessária.
+
+---
+
+### 3.2. Backend & Integração AI (Server Actions & LangChain)
+
+Responsável pela orquestração entre a intenção do usuário e a geração de código.
+
+- **Engenharia de Prompt:** Constrói instruções dinâmicas contendo o perfil do especialista SQL, o schema do banco selecionado e a pergunta do usuário.  
+- **API de LLM:** Integração com modelos generativos (Groq/Llama) para realizar a tradução semântica.  
+- **Validação:** Recebe a string SQL gerada e a entrega ao frontend para execução ou exibição.
+
+---
+
+## 4. Regras de Negócio e Implementação Técnica
+
+Diferente de um sistema transacional comum, as regras de negócio deste projeto focam na integridade da interpretação dos dados e na otimização de contexto.
+
+### 4.1. Regra de Extração e Limpeza de Schema (Data Parsing)
+
+Para garantir que a IA compreenda o banco de dados sem exceder limites de processamento ou custo, foi implementado um algoritmo rigoroso de extração:
+
+- **Entrada:** O sistema aceita dumps completos de banco de dados (incluindo grandes volumes de `INSERT INTO`).  
+- **Processamento:** Um algoritmo de Regex filtra o conteúdo, descartando dados sensíveis e volumosos, mantendo estritamente os comandos `CREATE TABLE` e `ALTER TABLE`.  
+- **Justificativa:** Garante que a IA receba apenas a estrutura relacional essencial para montar JOINs corretamente, sem expor dados reais.
+
+---
+
+### 4.2. Persistência e Versionamento de Contexto
+
+O sistema implementa uma camada de armazenamento cliente (Zustand + IndexedDB) que permite ao usuário alternar entre diferentes contextos de banco de dados (ex: “Banco Financeiro” vs “Banco de Estoque”) instantaneamente.
+
+A regra garante que uma pergunta feita no contexto do "Banco A" não sofra alucinações baseadas no schema do "Banco B".
+
+### Cenários Executados
+
+#### • Consultas Simples  
+**Input:** “Liste todos os clientes que moram no Brasil.”  
+**Output Esperado:**  
+```sql
+SELECT * FROM Customer WHERE Country = 'Brazil';
