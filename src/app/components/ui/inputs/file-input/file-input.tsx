@@ -36,7 +36,6 @@ export function FileInput({
     } catch (error) {
       inputRef.current!.value = "";
       setFileName(null);
-      throw error;
     }
   }
 
