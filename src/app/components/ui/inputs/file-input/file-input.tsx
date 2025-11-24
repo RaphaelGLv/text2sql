@@ -33,6 +33,7 @@ export function FileInput({
     try {
       await Promise.resolve(onChange(file));
       setFileName(file?.name ?? null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       inputRef.current!.value = "";
       setFileName(null);

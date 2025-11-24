@@ -37,6 +37,7 @@
 
 .hiddenInput {
   position: absolute !important;
+  bottom: 0 !important;
   width: 1px !important;
   height: 1px !important;
   padding: 0 !important;
