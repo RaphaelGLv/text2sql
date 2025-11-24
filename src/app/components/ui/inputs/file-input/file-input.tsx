@@ -7,12 +7,18 @@ import { AppButton } from "../../buttons/app-button";
 interface FileInputProps {
   id: string;
   label: string;
-  onChange: (file: File | null) => void;
+  onChange: (file: File | null) => void | Promise<void>;
   required?: boolean;
   accept?: string;
 }
 
-export function FileInput({ id, label, accept, onChange, required }: FileInputProps) {
+export function FileInput({
+  id,
+  label,
+  accept,
+  onChange,
+  required,
+}: FileInputProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
 
@@ -20,14 +26,18 @@ export function FileInput({ id, label, accept, onChange, required }: FileInputPr
     inputRef.current?.click();
   }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    
+  async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const list = e.target.files;
     const file = list && list.length > 0 ? list[0] : null;
 
-    onChange(file);
-
-    setFileName(file ? file.name : null);
+    try {
+      await Promise.resolve(onChange(file));
+      setFileName(file?.name ?? null);
+    } catch (error) {
+      inputRef.current!.value = "";
+      setFileName(null);
+      throw error;
+    }
   }
 
   return (

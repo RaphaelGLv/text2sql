@@ -14,38 +14,60 @@ export interface UseNewSchemaFormModalHooks {
 
 export function useNewSchemaFormModalHooks(): UseNewSchemaFormModalHooks {
   const { setToast } = useToastStore();
-  const [value, setValue] = useState<SchemaScriptEntity>({ name: "", script: "" });
+  const [value, setValue] = useState<SchemaScriptEntity>({
+    name: "",
+    script: "",
+  });
   const { addSchemaScript } = useSchemaScriptService();
 
   function handleFileInputChange(file: File | null) {
-    if (!file) {
-      setToast({
-        message: "Arquivo invalido ou não selecionado.",
-        type: "error",
-      });
-      return;
-    }
+    return new Promise<void>((resolve, reject) => {
+      if (!file) {
+        setToast({
+          message: "Arquivo invalido ou não selecionado.",
+          type: "error",
+        });
+        clearForm();
+        reject(new Error("No file provided"));
+        return;
+      }
 
-    const reader = new FileReader();
+      const reader = new FileReader();
 
-    reader.onload = (event) => {
-      const text = event.target?.result;
-      if (typeof text === "string") {
+      reader.onload = (event) => {
+        const text = event.target?.result;
+        if (typeof text !== "string") {
+          clearForm();
+          reject(new Error("File read produced non-string result"));
+          return;
+        }
+
         const cleanedScript = extractSchemaFromSqlScript(text);
 
         if (!cleanedScript) {
           setToast({
-            message: "Nenhum comando CREATE TABLE ou ALTER TABLE encontrado no arquivo.",
+            message:
+              "Nenhum comando CREATE TABLE ou ALTER TABLE encontrado no arquivo.",
             type: "error",
           });
+
+          clearForm();
+
+          reject(new Error("Invalid SQL script file."));
           return;
         }
 
-        setValue({ ...value, script: cleanedScript });
-      }
-    };
+        setValue((prev) => ({ ...prev, script: cleanedScript }));
+        resolve();
+      };
 
-    reader.readAsText(file);
+      reader.onerror = () => {
+        clearForm();
+        reject(new Error("Error reading file"));
+      };
+
+      reader.readAsText(file);
+    });
   }
 
   function onSave() {
